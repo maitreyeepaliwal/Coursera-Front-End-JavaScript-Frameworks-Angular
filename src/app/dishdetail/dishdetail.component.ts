@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild  } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, Inject } from '@angular/core';
 import { Dish } from '../shared/dish';
 import { Params, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
@@ -25,6 +25,7 @@ export class DishdetailComponent implements OnInit {
   dishIds: string[];
   prev: string;
   next: string;
+  copy: Dish;
 
   formErrors : any = {
     'author': '',
@@ -44,26 +45,30 @@ export class DishdetailComponent implements OnInit {
 
   createForm() {
     this.commentForm = this.fb.group({
-      author: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(25)] ],
-      comment: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(25)] ]
+      comment: ['', [Validators.required] ],
+      rating: 5,
+      author: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(35)] ],
+
     });
-  
-  }
-
-
-  onSubmit() {
-    this.comment = this.commentForm.value;
-    this.commentForm.reset({
-      author: '',
-      comment: ''
-    });
-
-    this.commentFormDirective.resetForm();
 
     this.commentForm.valueChanges
     .subscribe(data => this.onValueChanged(data));
+
+  this.onValueChanged(); // (re)set validation messages now
+  }
+
+  onSubmit() {
+    let date = new Date().toISOString();
+    this.comment = this.commentForm.value;
+    this.comment.date = date;
+    this.copy.comments.push(this.comment);
     
-    this.onValueChanged(); // (re)set validation messages now
+    this.commentForm.reset({
+      comment: '',
+      rating: 5,
+      author: ''
+    });
+
   }
 
   onValueChanged(data?: any) {
@@ -89,7 +94,8 @@ export class DishdetailComponent implements OnInit {
   constructor(private dishservice: DishService,
     private route: ActivatedRoute,
     private location: Location, 
-    private fb: FormBuilder) { 
+    private fb: FormBuilder, 
+    @Inject('BaseURL') public BaseURL : string ) { 
       this.createForm();
     }
 

@@ -3,17 +3,22 @@ import { Promotion } from '../shared/promotion';
 import { PROMOTIONS } from '../shared/promotions';
 import { Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
+import { BaseURL } from '../shared/baseurl';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PromotionService {
 
-  constructor() { 
+  constructor(private http: HttpClient) { 
   }
 
   getPromotions(): Observable<Promotion[]> {
-    return of(PROMOTIONS).pipe(delay(2000));
+    return this.http.get<Promotion[]>(BaseURL + 'promotions');
+    
+    // return of(PROMOTIONS).pipe(delay(2000));
     /* return new Promise(resolve=> {
       // Simulate server latency with 2 second delay
         setTimeout(() => resolve(PROMOTIONS), 2000);
@@ -21,7 +26,10 @@ export class PromotionService {
   }
 
   getPromotion(id: string): Observable<Promotion> {
-    return of(PROMOTIONS.filter((promo) => (promo.id === id))[0]).pipe(delay(2000));
+    return this.http.get<Promotion>(BaseURL + 'promotions/' + id );
+    
+    //return of(PROMOTIONS.filter((promo) => (promo.id === id))[0]).pipe(delay(2000));
+    
     /* return new Promise(resolve=> {
       // Simulate server latency with 2 second delay
         setTimeout(() => resolve(PROMOTIONS.filter((promo) => (promo.id === id))[0]), 2000);
@@ -29,7 +37,9 @@ export class PromotionService {
   }
 
   getFeaturedPromotion(): Observable<Promotion> {
-    return of(PROMOTIONS.filter((promotion) => promotion.featured)[0]).pipe(delay(2000))
+    return this.http.get<Promotion[]>(BaseURL + 'promotions?featured=true').pipe(map(promotions => promotions[0]));
+
+    //return of(PROMOTIONS.filter((promotion) => promotion.featured)[0]).pipe(delay(2000))
     /*return new Promise(resolve=> {
       // Simulate server latency with 2 second delay
         setTimeout(() => resolve(PROMOTIONS.filter((promotion) => promotion.featured)[0]), 2000);

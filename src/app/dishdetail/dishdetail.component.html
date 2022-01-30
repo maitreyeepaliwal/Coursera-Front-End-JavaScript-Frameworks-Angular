@@ -14,7 +14,7 @@
               <h3 *ngIf="dish">{{dish.name | uppercase}}</h3>
             </mat-card-title>
           </mat-card-header>
-          <img mat-card-image src={{dish.image}} alt={{dish.name}}>
+          <img mat-card-image src="{{BaseURL + dish.image}}" alt={{dish.name}}>
           <mat-card-content>
             <p>{{dish.description}}
             </p>
@@ -45,22 +45,37 @@
                 <span>-- {{comment.author}} {{ comment.date | date }}</span>
             </p>
         </mat-list-item>
+
+        <mat-list-item *ngIf="!commentForm.invalid">
+          <p matLine>
+            <span>{{commentForm.value.comment}}</span>
+        </p>
+        <p matLine>
+            <span>{{commentForm.value.rating}} Stars</span>
+        </p>
+        <p matLine>
+            <span>-- {{commentForm.value.author}} {{ commentForm.value.date | date }}</span>
+        </p>
+      </mat-list-item>
+
     </mat-list>
 
     <form novalidate [formGroup]="commentForm" #fform="ngForm" (ngSubmit)="onSubmit()">
       <p>
-        <mat-form-field>
+        <mat-form-field class="full-width">
           <input matInput formControlName="author" placeholder="Name" type="text" required>
           <mat-error *ngIf="formErrors.author">{{formErrors.author}}</mat-error>
         </mat-form-field> <br>
-        <mat-slider max="5" step="1" value="5" thumbLabel tickInterval="1" ></mat-slider> <br>
-        <mat-form-field>
-          <textarea matInput formControlName="comment" placeholder="Comment" type="text" rows="10" cols="1000" required> </textarea>
+        <mat-slider formControlName="rating" max="5" step="1" value="5" thumbLabel tickInterval="1" ></mat-slider> <br>
+        <mat-form-field class="full-width">
+          <textarea matInput formControlName="comment" placeholder="Comment" type="text" rows="10" required> </textarea>
           <mat-error *ngIf="formErrors.comment">{{formErrors.comment}}</mat-error>
         </mat-form-field>
       </p>
       <button type="submit" mat-button class="background-primary text-floral-white" [disabled]="commentForm.invalid" >Submit</button>
   </form>
+
+
   </div>
   
   <div [hidden]="dish">
