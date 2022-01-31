@@ -26,6 +26,7 @@ export class DishdetailComponent implements OnInit {
   prev: string;
   next: string;
   copy: Dish;
+  errMess: string;
 
   formErrors : any = {
     'author': '',
@@ -104,7 +105,7 @@ export class DishdetailComponent implements OnInit {
     this.dishservice.getDish(id).subscribe(dish => this.dish = dish); */
 
     this.dishservice.getDishIds().subscribe(dishIds => this.dishIds = dishIds);
-    this.route.params.pipe(switchMap((params: Params) => this.dishservice.getDish(params['id']))).subscribe(dish => { this.dish = dish; this.setPrevNext(dish.id); });
+    this.route.params.pipe(switchMap((params: Params) => this.dishservice.getDish(params['id']))).subscribe(dish => { this.dish = dish; this.setPrevNext(dish.id); }, errmess => this.errMess = <any>errmess);
   }
 
   setPrevNext(dishId: string) {

@@ -10,6 +10,7 @@ import { DishService } from '../services/dish.service';
 
 export class MenuComponent implements OnInit {
   dishes : Dish[];
+  errMess: string;
 
   //selectedDish : Dish;
 
@@ -22,7 +23,12 @@ export class MenuComponent implements OnInit {
 
   ngOnInit(): void {
     // without promise -> this.dishes = this.dishservice.getDishes();
-    this.dishservice.getDishes().subscribe(dishes => this.dishes = dishes);
+    // this.dishservice.getDishes().subscribe(dishes => this.dishes = dishes);
+
+    this.dishservice.getDishes()//returning immediately
+    .subscribe({next:(dishes) => this.dishes = dishes,
+    error: errmess => this.errMess = <any>errmess});
+
   }
 
 }
