@@ -11,10 +11,10 @@ import {NgForm} from '@angular/forms';
 })
 export class ContactComponent implements OnInit {
 
-  @ViewChild('fform') feedbackFormDirective: NgForm;;
+  @ViewChild('fform') feedbackFormDirective!: NgForm;;
 
-  feedbackForm: FormGroup;
-  feedback: Feedback;
+  feedbackForm!: FormGroup;
+  feedback!: Feedback;
   contactType = ContactType;
 
   formErrors : any = {

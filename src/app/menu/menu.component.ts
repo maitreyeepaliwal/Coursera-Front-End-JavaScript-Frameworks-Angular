@@ -9,8 +9,8 @@ import { DishService } from '../services/dish.service';
 })
 
 export class MenuComponent implements OnInit {
-  dishes : Dish[];
-  errMess: string;
+  dishes! : Dish[];
+  errMess!: string;
 
   //selectedDish : Dish;
 
