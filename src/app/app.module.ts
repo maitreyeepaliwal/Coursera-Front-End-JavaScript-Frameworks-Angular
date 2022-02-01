@@ -35,6 +35,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import {MatSliderModule} from '@angular/material/slider';
 import { HttpClientModule } from '@angular/common/http';
 import { BaseURL } from './shared/baseurl';
+import { HighlightDirective } from './directives/highlight.directive';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { BaseURL } from './shared/baseurl';
     HomeComponent,
     AboutComponent,
     ContactComponent,
-    LoginComponent
+    LoginComponent,
+    HighlightDirective
   ],
   imports: [
     BrowserModule,
